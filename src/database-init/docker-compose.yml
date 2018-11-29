@@ -1,0 +1,18 @@
+version: '3.7'
+
+volumes: 
+  db.data:
+
+services:
+  mysql:
+    image: mysql:8.0.13
+    volumes:
+      - db.data:/var/lib/mysql
+    environment: 
+      MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+      MYSQL_DATABASE: 'shopp'
+      MYSQL_USER: 'shopp'
+      MYSQL_PASSWORD: 'shopp'
+    ports: 
+      - '3307:3306'
+  
