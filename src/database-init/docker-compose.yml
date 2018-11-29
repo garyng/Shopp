@@ -10,6 +10,7 @@ services:
       - db.data:/var/lib/mysql
     environment: 
       MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+      # eina4zah9phe6Peithah7aes2suo8yei
       MYSQL_DATABASE: 'shopp'
       MYSQL_USER: 'shopp'
       MYSQL_PASSWORD: 'shopp'

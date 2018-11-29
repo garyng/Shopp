@@ -396,8 +396,8 @@
       </DesignerInfoPropertySet>
     </Options>
     <Diagrams >
-      <Diagram DiagramId="7e0b6e2d4fe34c548cdc9df290b45e95" Name="Diagram1">
-        <EntityTypeShape EntityType="Shopp.Admin" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="77c1a95c805246e3adfcd66f797f2948" Name="Diagram1">
+        <EntityTypeShape EntityType="Shopp.Admin" Width="1.5" PointX="7.625" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Shopp.OrderDetail" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Shopp.Order" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Shopp.User" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
