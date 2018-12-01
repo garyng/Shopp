@@ -24,7 +24,7 @@
           <Property Name="PricePerUnit" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.OrderDetail_Order" FromRole="OrderDetail_Order_Source" ToRole="OrderDetail_Order_Target" />
+          <NavigationProperty Name="Order" Relationship="Self.Order_OrderDetails" FromRole="Order_OrderDetails_Target" ToRole="Order_OrderDetails_Source" />
           <NavigationProperty Name="Product" Relationship="Self.OrderDetail_Product" FromRole="OrderDetail_Product_Source" ToRole="OrderDetail_Product_Target" />
         </EntityType>
         <EntityType Name="Order" customannotation:ClrType="Shopp.Order, Shopp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -36,6 +36,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="PaymentStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PaymentChannel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.Order_OrderDetails" FromRole="Order_OrderDetails_Source" ToRole="Order_OrderDetails_Target" />
           <NavigationProperty Name="User" Relationship="Self.Order_User" FromRole="Order_User_Source" ToRole="Order_User_Target" />
         </EntityType>
         <EntityType Name="User" customannotation:ClrType="Shopp.User, Shopp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -67,11 +68,26 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Contact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ShopName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="Order_OrderDetails">
+          <End Role="Order_OrderDetails_Source" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order_OrderDetails_Target" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_OrderDetails_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_OrderDetails_Target">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Order_User">
           <End Role="Order_User_Source" Type="Self.Order" Multiplicity="*" />
           <End Role="Order_User_Target" Type="Self.User" Multiplicity="1">
@@ -83,20 +99,6 @@
             </Principal>
             <Dependent Role="Order_User_Source">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="OrderDetail_Order">
-          <End Role="OrderDetail_Order_Source" Type="Self.OrderDetail" Multiplicity="*" />
-          <End Role="OrderDetail_Order_Target" Type="Self.Order" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <ReferentialConstraint>
-            <Principal Role="OrderDetail_Order_Target">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OrderDetail_Order_Source">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -135,13 +137,13 @@
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <AssociationSet Name="Order_OrderDetails" Association="Self.Order_OrderDetails">
+            <End Role="Order_OrderDetails_Source" EntitySet="Orders" />
+            <End Role="Order_OrderDetails_Target" EntitySet="OrderDetails" />
+          </AssociationSet>
           <AssociationSet Name="Order_User" Association="Self.Order_User">
             <End Role="Order_User_Source" EntitySet="Orders" />
             <End Role="Order_User_Target" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="OrderDetail_Order" Association="Self.OrderDetail_Order">
-            <End Role="OrderDetail_Order_Source" EntitySet="OrderDetails" />
-            <End Role="OrderDetail_Order_Target" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="Product_Vendor" Association="Self.Product_Vendor">
             <End Role="Product_Vendor_Source" EntitySet="Products" />
@@ -221,6 +223,7 @@
               <MappingFragment StoreEntitySet="Vendor">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
@@ -293,11 +296,26 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="true" />
           <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
           <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
           <Property Name="Contact" Type="nvarchar(max)" Nullable="true" />
           <Property Name="ShopName" Type="nvarchar(max)" Nullable="true" />
         </EntityType>
+        <Association Name="Order_OrderDetails">
+          <End Role="Order" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Order_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -309,20 +327,6 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="OrderDetail_Order">
-          <End Role="Order" Type="Self.Order" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OrderDetail">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -361,13 +365,13 @@
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" Table="Users" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" Table="Products" />
           <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" Table="Vendors" />
+          <AssociationSet Name="Order_OrderDetails" Association="Self.Order_OrderDetails">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
           <AssociationSet Name="Order_User" Association="Self.Order_User">
             <End Role="User" EntitySet="User" />
             <End Role="Order" EntitySet="Order" />
-          </AssociationSet>
-          <AssociationSet Name="OrderDetail_Order" Association="Self.OrderDetail_Order">
-            <End Role="Order" EntitySet="Order" />
-            <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
           <AssociationSet Name="Product_Vendor" Association="Self.Product_Vendor">
             <End Role="Vendor" EntitySet="Vendor" />
@@ -396,15 +400,15 @@
       </DesignerInfoPropertySet>
     </Options>
     <Diagrams >
-      <Diagram DiagramId="77c1a95c805246e3adfcd66f797f2948" Name="Diagram1">
-        <EntityTypeShape EntityType="Shopp.Admin" Width="1.5" PointX="7.625" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Shopp.OrderDetail" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Shopp.Order" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Shopp.User" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Shopp.Product" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="Shopp.Vendor" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+      <Diagram DiagramId="618664bf3b27454bb9c21b56816b72c8" Name="Diagram1">
+        <EntityTypeShape EntityType="Shopp.Admin" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopp.OrderDetail" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopp.Order" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopp.User" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopp.Product" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopp.Vendor" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="Shopp.Order_OrderDetails" ManuallyRouted="false" />
         <AssociationConnector Association="Shopp.Order_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Shopp.OrderDetail_Order" ManuallyRouted="false" />
         <AssociationConnector Association="Shopp.Product_Vendor" ManuallyRouted="false" />
         <AssociationConnector Association="Shopp.OrderDetail_Product" ManuallyRouted="false" />
       </Diagram>
