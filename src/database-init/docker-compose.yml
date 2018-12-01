@@ -15,5 +15,5 @@ services:
       MYSQL_USER: 'shopp'
       MYSQL_PASSWORD: 'shopp'
     ports: 
-      - '3307:3306'
+      - '3306:3306'
   
