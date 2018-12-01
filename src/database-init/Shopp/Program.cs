@@ -113,7 +113,8 @@ namespace Shopp
 
 			Console.WriteLine(
 				$"Checking and creating database using the connection '{context.Database.Connection.ConnectionString}'");
-			context.Database.CreateIfNotExists();
+			context.Database.Delete();
+			context.Database.Create();
 
 			Console.WriteLine("Creating users...");
 			var users = new Faker<User>()
