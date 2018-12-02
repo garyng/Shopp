@@ -13,6 +13,9 @@ namespace Shopp
 		public int Id { get; set; }
 
 		public string UserName { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+
 		public string Password { get; set; }
 
 		public string Email { get; set; }
@@ -58,6 +61,8 @@ namespace Shopp
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public string Description { get; set; }
+
 		public decimal Price { get; set; }
 		public string Category { get; set; }
 
@@ -65,6 +70,8 @@ namespace Shopp
 
 		public int VendorId { get; set; }
 		public Vendor Vendor { get; set; }
+
+		public int StockAvailable { get; set; }
 	}
 
 	public class Vendor
@@ -78,6 +85,7 @@ namespace Shopp
 		public string Contact { get; set; }
 
 		public string ShopName { get; set; }
+		public string ShopLogoUrl { get; set; }
 	}
 
 	public class Admin
@@ -126,6 +134,8 @@ namespace Shopp
 					u.Email = f.Internet.Email();
 					u.Password = "user";
 					u.UserName = $"user{u.Id}";
+					u.FirstName = f.Name.FirstName();
+					u.LastName = f.Name.LastName();
 				})
 				.Generate(10);
 			context.Users.AddRange(users);
@@ -171,6 +181,7 @@ namespace Shopp
 					v.Password = "vendor";
 					v.UserName = $"vendor{v.Id}";
 					v.ShopName = f.Company.CompanyName();
+					v.ShopLogoUrl = "https://placeimg.com/128/128/arch";
 				})
 				.Generate(10);
 			context.Vendors.AddRange(vendors);
@@ -185,6 +196,8 @@ namespace Shopp
 					p.ImageUrl = "https://source.unsplash.com/300x300/?shoe";
 					p.Name = f.Commerce.ProductName();
 					p.Vendor = f.PickRandom(vendors);
+					p.Description = f.Lorem.Sentences(2);
+					p.StockAvailable = f.Random.Int(0, 200);
 				})
 				.Generate(50);
 			context.Products.AddRange(products);

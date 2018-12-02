@@ -20,6 +20,24 @@ ERD
 
 ---
 
+<img src="erd-sarmela.jpeg" width="50%" height="50%"/>
+
+Group Sarmela
+
+---
+
+<img src="erd-nazmi.jpeg" width="50%" height="50%"/>
+
+Group Nazmi
+
+---
+
+<img src="erd-eugene.jpeg" width="40%" height="40%"/>
+
+Group Eugene
+
+---
+
 ![](Shopp.png)
 
 ---
@@ -31,6 +49,14 @@ ERD
 1. each `OrderDetail` can have one `Product`
 1. each `Product` belongs to one `Vendor`
 1. `Admin`
+
+---
+
+## Possible extension points
+
+1. persist items in `Cart`
+1. choosing `Shipment` method tracking status
+1. displaying `Promotion` offered by `Vendor`
 
 ---
 
