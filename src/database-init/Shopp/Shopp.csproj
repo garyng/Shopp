@@ -78,4 +78,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(TargetDir)*" "$(SolutionDir)..\..\sql\database-init" /s /i /y /d</PostBuildEvent>
+  </PropertyGroup>
 </Project>
