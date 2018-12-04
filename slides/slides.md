@@ -20,13 +20,13 @@ ERD
 
 ---
 
-<img src="erd-sarmela.jpeg" width="50%" height="50%"/>
+<img src="erd-sarmela.jpeg" width="40%" height="40%"/>
 
 Group Sarmela
 
 ---
 
-<img src="erd-nazmi.jpeg" width="50%" height="50%"/>
+<img src="erd-nazmi.jpeg" width="40%" height="40%"/>
 
 Group Nazmi
 
@@ -38,7 +38,8 @@ Group Eugene
 
 ---
 
-![](Shopp.png)
+<img src="Shopp.png" width="80%" height="80%"/>
+
 
 ---
 
@@ -55,7 +56,7 @@ Group Eugene
 ## Possible extension points
 
 1. persist items in `Cart`
-1. choosing `Shipment` method tracking status
+1. choosing `Shipment` method and tracking status
 1. displaying `Promotion` offered by `Vendor`
 
 ---
